@@ -2,23 +2,26 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Hero } from "@/components/sections/Hero";
-import { Comparison } from "@/components/sections/Comparison";
-import { HowItWorks } from "@/components/sections/HowItWorks";
-import { DiagnosticForm } from "@/components/sections/DiagnosticForm";
-import { Differentials } from "@/components/sections/Differentials";
-import { FAQs } from "@/components/sections/FAQs";
-import { CTASection } from "@/components/sections/CTASection";
-import { Footer } from "@/components/sections/Footer";
+import {
+  Hero,
+  SocialProofStrip,
+  HowItWorks,
+  Comparison,
+  ProductShowcase,
+  Differentials,
+  DiagnosticForm,
+  FAQs,
+  CTASection,
+  Footer,
+} from "@/components/sections";
 
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "YOUR_META_PIXEL_ID";
 const GA4_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || "G-XXXXXXXXXX";
 
 const navLinks = [
   { label: "Como funciona", href: "#como-funciona" },
-  { label: "Benefícios", href: "#beneficios" },
+  { label: "Diferenciais", href: "#beneficios" },
   { label: "FAQ", href: "#faq" },
-  { label: "Contato", href: "#cta" },
 ];
 
 const TrackingScripts = () => {
@@ -90,7 +93,7 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -106,77 +109,107 @@ const Header = () => {
       <TrackingScripts />
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white/90 backdrop-blur-md border-b border-gray-200" : "bg-transparent"
+          scrolled ? "glass-header shadow-xs py-3" : "bg-transparent py-5"
         }`}
       >
-        <nav className="max-w-6xl mx-auto px-4 md:px-6 flex items-center justify-between h-16 md:h-18">
-          <a href="#" className="flex items-center gap-2.5" aria-label="NextCar">
+        <nav className="max-w-6xl mx-auto px-4 md:px-6 flex items-center justify-between">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="flex items-center gap-2.5"
+            aria-label="NextCar"
+          >
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="3" />
               </svg>
             </div>
-            <span className={`font-display font-semibold text-base transition-colors ${scrolled ? "text-gray-900" : "text-gray-900"}`}>
+            <span className="font-display font-bold text-base text-gray-900 tracking-tight">
               NextCar
             </span>
           </a>
 
+          {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
-                className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo(link.href);
+                }}
+                className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
+          {/* Desktop Call to Action */}
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => scrollTo("#diagnostic")}
-              className="px-5 py-2 rounded-[10px] bg-orange-500 text-white text-sm font-semibold hover:bg-orange-600 transition-colors"
+              className="px-4 py-2.5 rounded-[10px] bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold transition-colors duration-200 shadow-xs"
             >
               Começar diagnóstico
             </button>
           </div>
 
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-gray-500 hover:text-gray-900"
+            className="md:hidden p-2 text-gray-500 hover:text-gray-950 focus:outline-none"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileOpen
-                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              }
+              {mobileOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
             </svg>
           </button>
         </nav>
 
+        {/* Mobile Dropdown Menu */}
         {mobileOpen && (
           <motion.div
-            className="md:hidden bg-white border-b border-gray-200 px-4 pb-5 pt-2"
+            className="md:hidden border-t border-gray-200/80 px-4 py-4 mt-3 bg-white"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
           >
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1.5">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
-                  className="px-3 py-2.5 text-sm text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollTo(link.href);
+                  }}
+                  className="px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-950 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   {link.label}
                 </a>
               ))}
               <button
                 onClick={() => scrollTo("#diagnostic")}
-                className="mt-2 px-4 py-2.5 rounded-[10px] bg-orange-500 text-white text-sm font-semibold text-center"
+                className="mt-3 px-4 py-3 rounded-[10px] bg-orange-500 text-white text-sm font-semibold text-center hover:bg-orange-600 transition-colors shadow-xs"
               >
                 Começar diagnóstico
               </button>
@@ -201,12 +234,14 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main>
+      <main className="flex-grow">
         <Hero />
-        <Comparison />
+        <SocialProofStrip />
         <HowItWorks />
-        <DiagnosticForm />
+        <Comparison />
+        <ProductShowcase />
         <Differentials />
+        <DiagnosticForm />
         <FAQs />
         <CTASection />
       </main>

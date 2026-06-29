@@ -1,8 +1,10 @@
 export { Hero } from "./Hero";
-export { Comparison } from "./Comparison";
+export { SocialProofStrip } from "./SocialProofStrip";
 export { HowItWorks } from "./HowItWorks";
-export { DiagnosticForm } from "./DiagnosticForm";
+export { Comparison } from "./Comparison";
+export { ProductShowcase } from "./ProductShowcase";
 export { Differentials } from "./Differentials";
+export { DiagnosticForm } from "./DiagnosticForm";
 export { FAQs } from "./FAQs";
 export { CTASection } from "./CTASection";
 export { Footer } from "./Footer";
