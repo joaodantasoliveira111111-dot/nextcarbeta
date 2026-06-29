@@ -2,203 +2,157 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { MapPin, ArrowRight, Search, CheckCircle, BarChart3, Star } from "lucide-react";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-orange-500/5 blur-3xl" />
-        <div className="absolute top-1/2 left-1/3 w-[300px] h-[300px] rounded-full bg-blue-400/5 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(59,130,246,0.08),transparent_50%)]" />
-      </div>
+    <section className="pt-28 pb-20 md:pt-36 md:pb-28 px-4 bg-white">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+          <div className="max-w-xl">
+            <motion.div
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 border border-gray-200 mb-8"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <span className="text-xs text-gray-500 font-medium">Recife e Região Metropolitana</span>
+            </motion.div>
 
-      <div className="relative z-10 w-full pt-24 pb-16 md:pb-0">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="max-w-xl">
-              <motion.div
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <MapPin className="w-3.5 h-3.5 text-orange-400" />
-                <span className="text-xs font-medium text-white/70">
-                  Atendendo Recife e Região Metropolitana
-                </span>
-              </motion.div>
+            <motion.h1
+              className="font-display text-[2.5rem] md:text-[3.25rem] lg:text-[4rem] font-bold text-gray-900 leading-[1.08] tracking-tight mb-5"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Pare de procurar carro.
+              <br />
+              Nós fazemos isso por você.
+            </motion.h1>
 
-              <motion.h1
-                className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight mb-6"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-              >
-                Pare de{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-300">
-                  procurar carro
-                </span>
-                <br />
-                Nós fazemos isso por você.
-              </motion.h1>
-
-              <motion.p
-                className="text-lg md:text-xl text-white/70 leading-relaxed mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.4 }}
-              >
-                Você responde algumas perguntas rápidas e nossa equipe encontra
-                as melhores opções disponíveis nas concessionárias parceiras de
-                Recife e Região Metropolitana.
-              </motion.p>
-
-              <motion.div
-                className="flex flex-col sm:flex-row gap-3 mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.5 }}
-              >
-                <motion.button
-                  onClick={() => document.getElementById("diagnostic")?.scrollIntoView({ behavior: "smooth" })}
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-orange-500 text-white font-display font-semibold text-sm uppercase tracking-wide shadow-orange hover:bg-orange-600 hover:shadow-orange-lg transition-all duration-300"
-                  whileHover={{ scale: 1.03, y: -1 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  Começar Diagnóstico Gratuito
-                  <ArrowRight className="w-4 h-4" />
-                </motion.button>
-                <motion.button
-                  onClick={() => document.getElementById("como-funciona")?.scrollIntoView({ behavior: "smooth" })}
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white/10 text-white font-medium text-sm backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-all duration-300"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  Como Funciona
-                </motion.button>
-              </motion.div>
-
-              <motion.div
-                className="flex items-center gap-3 text-sm text-white/50"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.7 }}
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>Leva menos de 2 minutos. Sem custo. Sem compromisso.</span>
-              </motion.div>
-            </div>
+            <motion.p
+              className="text-lg md:text-xl text-gray-500 leading-relaxed mb-8 max-w-lg"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Você responde algumas perguntas e nossa equipe pesquisa o mercado para encontrar as melhores opções para você. Gratuito e sem compromisso.
+            </motion.p>
 
             <motion.div
-              className="hidden lg:block relative"
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-3 mb-10"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-orange-500/10 rounded-3xl blur-xl" />
+              <button
+                onClick={() => document.getElementById("diagnostic")?.scrollIntoView({ behavior: "smooth" })}
+                className="px-6 py-3 rounded-[10px] bg-orange-500 text-white text-sm font-semibold hover:bg-orange-600 transition-colors"
+              >
+                Começar diagnóstico gratuito
+              </button>
+              <button
+                onClick={() => document.getElementById("como-funciona")?.scrollIntoView({ behavior: "smooth" })}
+                className="px-6 py-3 rounded-[10px] border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors"
+              >
+                Como funciona
+              </button>
+            </motion.div>
 
-                <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-                  <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400/80" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
-                      <div className="w-3 h-3 rounded-full bg-green-400/80" />
-                    </div>
-                    <div className="flex-1 flex justify-center">
-                      <div className="px-3 py-1 rounded-md bg-white/5 text-[10px] text-white/40 font-mono">
-                        app.nextcar.com/diagnostic
-                      </div>
+            <motion.div
+              className="flex items-center gap-2 text-sm text-gray-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Leva menos de 2 minutos
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="relative hidden lg:block"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="rounded-xl border border-gray-200 overflow-hidden shadow-lg">
+              <div className="flex items-center gap-1.5 px-4 py-2.5 bg-gray-50 border-b border-gray-200">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-gray-300" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-gray-300" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-gray-300" />
+                </div>
+                <div className="flex-1 flex justify-center">
+                  <span className="text-[10px] text-gray-400 font-mono">diagnóstico.nextcar.app</span>
+                </div>
+              </div>
+
+              <div className="p-8 md:p-10 bg-white">
+                <div className="max-w-sm mx-auto space-y-8">
+                  <div>
+                    <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider mb-1">ETAPA 1 DE 6</div>
+                    <div className="h-1 bg-gray-100 rounded-full">
+                      <div className="h-1 w-1/6 bg-blue-600 rounded-full" />
                     </div>
                   </div>
 
-                  <div className="flex h-80">
-                    <div className="w-36 bg-white/5 border-r border-white/10 p-3 space-y-2">
-                      {["Dashboard", "Diagnóstico", "Ofertas", "Perfil"].map((item, i) => (
-                        <div
-                          key={item}
-                          className={`px-3 py-2 rounded-lg text-xs ${
-                            i === 1
-                              ? "bg-blue-500/20 text-blue-300 font-medium"
-                              : "text-white/40 hover:text-white/60"
-                          } transition-colors`}
-                        >
-                          {item}
-                        </div>
-                      ))}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Qual seu nome?
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Seu nome completo"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-[10px] outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors bg-white text-gray-900 placeholder-gray-400"
+                        readOnly
+                      />
                     </div>
+                  </div>
 
-                    <div className="flex-1 p-4 space-y-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-sm font-medium text-white/80">Veículos Compatíveis</h3>
-                        <div className="flex items-center gap-1 text-[10px] text-orange-400 font-medium">
-                          <BarChart3 className="w-3 h-3" />
-                          12 encontrados
-                        </div>
-                      </div>
+                  <div className="flex items-center justify-between pt-2">
+                    <div />
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-gray-50 border border-gray-200">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+                      <span className="text-xs text-gray-500">Avançar</span>
+                      <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </div>
+                  </div>
 
-                      {[
-                        { name: "Honda HR-V 2024", price: "R$ 149.900", match: "98%", color: "from-blue-400 to-blue-500" },
-                        { name: "Toyota Corolla 2024", price: "R$ 159.900", match: "95%", color: "from-orange-400 to-orange-500" },
-                        { name: "Jeep Compass 2023", price: "R$ 139.900", match: "92%", color: "from-emerald-400 to-emerald-500" },
-                      ].map((car, i) => (
-                        <motion.div
-                          key={car.name}
-                          className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer group"
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.8 + i * 0.1 }}
-                        >
-                          <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${car.color} flex items-center justify-center flex-shrink-0`}>
-                            <Search className="w-4 h-4 text-white" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-white/80 truncate">{car.name}</p>
-                            <p className="text-[10px] text-white/40">{car.price}</p>
-                          </div>
-                          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/15 text-[10px] text-green-400 font-medium">
-                            <CheckCircle className="w-2.5 h-2.5" />
-                            {car.match}
-                          </div>
-                        </motion.div>
-                      ))}
-
-                      <div className="pt-2 border-t border-white/10">
-                        <div className="flex items-center gap-2 text-[10px] text-white/30">
-                          <Star className="w-3 h-3 text-orange-400" />
-                          <span>Análise inteligente em andamento</span>
-                          <span className="flex-1" />
-                          <span className="animate-pulse">●</span>
-                        </div>
-                      </div>
+                  <div className="pt-4 border-t border-gray-100">
+                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                      <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                      </svg>
+                      Seus dados estão seguros
                     </div>
                   </div>
                 </div>
-
-                <motion.div
-                  className="absolute -bottom-6 -right-6 w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-500/20 to-orange-400/10 border border-orange-400/30 flex items-center justify-center backdrop-blur-sm"
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <span className="font-display font-bold text-lg text-orange-400">GRÁTIS</span>
-                </motion.div>
               </div>
-            </motion.div>
-          </div>
+            </div>
+
+            <div className="absolute -bottom-3 -right-3 w-20 h-20 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center">
+              <span className="font-display font-bold text-sm text-orange-500">Grátis</span>
+            </div>
+          </motion.div>
         </div>
       </div>
 
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-        animate={{ y: [0, 8, 0] }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
+        animate={{ y: [0, 6, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
         </svg>
       </motion.div>
     </section>

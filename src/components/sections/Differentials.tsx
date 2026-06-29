@@ -2,88 +2,66 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Clock, Heart, Search, Filter, UserCheck, Building2 } from "lucide-react";
 
-const differentials = [
+const items = [
   {
-    icon: Clock,
-    title: "Economizamos seu tempo",
-    description: "Enquanto você cuida do que importa, nós fazemos a pesquisa completa por você.",
-    color: "from-blue-500 to-blue-600",
+    title: "Economia de tempo",
+    desc: "Enquanto você cuida da sua vida, nós pesquisamos o mercado completo por você.",
   },
   {
-    icon: Heart,
-    title: "Representamos quem compra",
-    description: "Diferente de concessionárias, nosso compromisso é com você, não com a venda.",
-    color: "from-orange-500 to-orange-600",
+    title: "Representamos você",
+    desc: "Diferente de concessionárias, nosso compromisso é com o comprador, não com a venda.",
   },
   {
-    icon: Search,
-    title: "Pesquisamos por você",
-    description: "Varremos o mercado em busca das melhores opções dentro do seu orçamento.",
-    color: "from-emerald-500 to-emerald-600",
+    title: "Pesquisa completa",
+    desc: "Varremos todo o mercado em busca das opções que realmente atendem seu perfil.",
   },
   {
-    icon: Filter,
-    title: "Seleção curada",
-    description: "Filtramos apenas veículos que realmente atendem suas necessidades e preferências.",
-    color: "from-purple-500 to-purple-600",
+    title: "Curadoria real",
+    desc: "Selecionamos apenas veículos compatíveis com suas necessidades e orçamento.",
   },
   {
-    icon: UserCheck,
-    title: "Atendimento personalizado",
-    description: "Um consultor dedicado para acompanhar você do início ao fim do processo.",
-    color: "from-pink-500 to-pink-600",
+    title: "Atendimento dedicado",
+    desc: "Um consultor exclusivo para acompanhar você do início ao fim do processo.",
   },
   {
-    icon: Building2,
-    title: "Concessionárias parceiras",
-    description: "Trabalhamos com as melhores concessionárias da sua região.",
-    color: "from-cyan-500 to-cyan-600",
+    title: "Parceiros selecionados",
+    desc: "Trabalhamos com as melhores concessionárias da sua região.",
   },
 ];
 
 export const Differentials = () => {
   return (
-    <section className="py-20 md:py-28 px-4 bg-slate-50" id="beneficios">
-      <div className="max-w-6xl mx-auto">
+    <section className="section-padding bg-white" id="beneficios">
+      <div className="container-max">
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center mb-14"
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
         >
-          <span className="inline-block text-xs font-semibold text-blue-600 uppercase tracking-[0.15em] mb-4">
-            Diferenciais
-          </span>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 leading-tight">
+          <span className="text-xs font-semibold text-blue-600 uppercase tracking-[0.12em] mb-3 block">Diferenciais</span>
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
             Por que escolher a NextCar?
           </h2>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
-            Não somos uma concessionária. Somos seu consultor automotivo inteligente.
+          <p className="text-gray-500 max-w-lg mx-auto">
+            Não somos uma concessionária. Somos seu consultor automotivo.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {differentials.map((item, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((item, index) => (
             <motion.div
               key={item.title}
-              className="group p-6 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 transition-all hover:shadow-md"
-              initial={{ opacity: 0, y: 20 }}
+              className="p-5 border border-gray-200 rounded-xl bg-white hover:border-gray-300 transition-colors"
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.4, delay: index * 0.06 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.3, delay: index * 0.04 }}
             >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                <item.icon className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-display text-lg font-bold text-slate-800 mb-2">
-                {item.title}
-              </h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                {item.description}
-              </p>
+              <h3 className="font-display font-semibold text-gray-900 mb-1.5 text-sm">{item.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>

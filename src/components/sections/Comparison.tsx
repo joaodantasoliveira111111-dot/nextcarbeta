@@ -2,118 +2,92 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { X, Check, Clock, Search, MessageSquare, MapPin, ThumbsUp } from "lucide-react";
 
-const traditionalSteps = [
-  { icon: Search, text: "Pesquisar dezenas de anúncios em vários sites" },
-  { icon: MessageSquare, text: "Entrar em contato com vários vendedores" },
-  { icon: MapPin, text: "Visitar diversas concessionárias" },
-  { icon: Clock, text: "Perder dias ou semanas pesquisando" },
+const traditional = [
+  "Pesquisar dezenas de anúncios em sites diferentes",
+  "Entrar em contato com vendedores um por um",
+  "Visitar várias concessionárias pessoalmente",
+  "Negociar preços sem referência de mercado",
+  "Perder dias ou semanas até encontrar o carro",
 ];
 
-const nextcarSteps = [
-  { icon: Search, text: "Você responde algumas perguntas rápidas" },
-  { icon: Check, text: "Nós pesquisamos o mercado inteiro por você" },
-  { icon: ThumbsUp, text: "Selecionamos apenas as melhores opções" },
-  { icon: Clock, text: "Você escolhe sem perder tempo" },
+const nextcar = [
+  "Você responde 6 perguntas rápidas",
+  "Nossa equipe pesquisa o mercado completo",
+  "Selecionamos as melhores opções para seu perfil",
+  "Comparamos preços e condições para você",
+  "Você recebe tudo pelo WhatsApp e escolhe",
 ];
 
 export const Comparison = () => {
   return (
-    <section className="py-20 md:py-28 px-4 bg-slate-50">
-      <div className="max-w-6xl mx-auto">
+    <section className="section-padding bg-gray-50">
+      <div className="container-max">
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
         >
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 leading-tight">
-            Comprar carro não deveria
-            <br />
-            dar tanto trabalho
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
+            Comprar carro não deveria dar tanto trabalho
           </h2>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
-            Veja a diferença entre o método tradicional e a experiência NextCar
+          <p className="text-gray-500 max-w-xl mx-auto">
+            Veja a diferença entre fazer tudo sozinho e ter a NextCar pesquisando por você
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5 }}
           >
-            <div className="p-6 md:p-8 rounded-2xl bg-white border border-red-100 hover:border-red-200 transition-colors shadow-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
-                  <X className="w-5 h-5 text-red-500" />
+            <div className="p-6 md:p-8 border border-gray-200 rounded-xl bg-white">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-7 h-7 rounded-md bg-red-50 flex items-center justify-center">
+                  <svg className="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
                 </div>
-                <div>
-                  <span className="text-[10px] font-semibold text-red-400 uppercase tracking-widest">Método</span>
-                  <p className="font-display font-bold text-xl text-slate-800">Tradicional</p>
-                </div>
+                <span className="text-xs font-semibold text-red-400 uppercase tracking-wider">Sozinho</span>
               </div>
-
-              <div className="space-y-4">
-                {traditionalSteps.map((step, index) => (
-                  <motion.div
-                    key={step.text}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
-                      <step.icon className="w-5 h-5 text-red-400" />
-                    </div>
-                    <p className="text-sm md:text-base text-slate-600">{step.text}</p>
-                  </motion.div>
+              <ul className="space-y-3">
+                {traditional.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-gray-600">
+                    <span className="text-gray-300 font-medium mt-px">{String(i + 1).padStart(2, "0")}</span>
+                    {item}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </motion.div>
 
           <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 16 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-orange-500/20 rounded-2xl blur-lg opacity-60" />
-            <div className="relative p-6 md:p-8 rounded-2xl bg-white border border-blue-100 shadow-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
-                  <Check className="w-5 h-5 text-green-500" />
+            <div className="p-6 md:p-8 border border-blue-100 rounded-xl bg-white">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-7 h-7 rounded-md bg-blue-50 flex items-center justify-center">
+                  <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
+                  </svg>
                 </div>
-                <div>
-                  <span className="text-[10px] font-semibold text-blue-500 uppercase tracking-widest">Método</span>
-                  <p className="font-display font-bold text-xl text-slate-800">NextCar</p>
-                </div>
+                <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">Com a NextCar</span>
               </div>
-
-              <div className="space-y-4">
-                {nextcarSteps.map((step, index) => (
-                  <motion.div
-                    key={step.text}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-blue-50/50 border border-blue-100"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
-                      <step.icon className="w-5 h-5 text-white" />
-                    </div>
-                    <p className="text-sm md:text-base text-slate-700 font-medium">{step.text}</p>
-                  </motion.div>
+              <ul className="space-y-3">
+                {nextcar.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-gray-700 font-medium">
+                    <span className="text-blue-500 font-medium mt-px">{String(i + 1).padStart(2, "0")}</span>
+                    {item}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </motion.div>
         </div>
