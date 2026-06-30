@@ -1,3 +1,4 @@
+export { Header } from "./Header";
 export { Hero } from "./Hero";
 export { SocialProofStrip } from "./SocialProofStrip";
 export { HowItWorks } from "./HowItWorks";

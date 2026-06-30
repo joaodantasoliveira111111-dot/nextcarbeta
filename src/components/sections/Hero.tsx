@@ -2,92 +2,95 @@
 
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Clock, Shield, ArrowRight } from "lucide-react";
-
-const fadeUp = (delay: number = 0) => ({
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
-});
+import { Clock, Shield, Check, ChevronRight } from "lucide-react";
 
 export const Hero = () => {
+  const scrollTo = (href: string) => {
+    const el = document.getElementById(href.replace("#", ""));
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 lg:pt-44 lg:pb-32 px-4 md:px-6 bg-white overflow-hidden">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section className="relative pt-[10rem] pb-[6rem] px-4 md:px-6 bg-[var(--bg)] overflow-hidden">
+      <div className="container-max">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-start">
           {/* ── Left: Copy ──────────────────────── */}
-          <div className="max-w-xl">
+          <div className="max-w-2xl">
             <motion.div
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-[10px] border border-gray-200 bg-gray-50 mb-8"
-              {...fadeUp(0)}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--border-default)] bg-[var(--color-bg-secondary)] mb-8"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 600, delay: 0, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-              <span className="text-xs text-gray-500 font-medium tracking-wide">
+              <div className="w-2 h-2 rounded-full bg-[var(--accent-tertiary)]" />
+              <span className="text-overline text-[var(--accent-tertiary)]">
                 Consultoria Automotiva Inteligente
               </span>
             </motion.div>
 
             <motion.h1
-              className="font-display text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-bold text-gray-900 leading-[1.06] tracking-[-0.025em] mb-6"
-              {...fadeUp(0.08)}
+              className="text-display-xl text-[var(--fg)] leading-[1.02] tracking-[-0.03em] mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 700, delay: 80, ease: [0.16, 1, 0.3, 1] }}
             >
-              Pare de procurar
+              Pare de procurar carro.
               <br />
-              carro.{" "}
-              <span className="text-gray-400">Nós fazemos</span>
+              <span className="text-[var(--fg-secondary)]">Nós fazemos</span>
               <br />
-              <span className="text-gray-400">isso por você.</span>
+              <span className="text-[var(--fg-secondary)]">isso por você.</span>
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl text-gray-500 leading-relaxed mb-8 max-w-md"
-              {...fadeUp(0.16)}
+              className="text-body-lg text-[var(--fg-secondary)] leading-relaxed mb-10 max-w-xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 700, delay: 160, ease: [0.16, 1, 0.3, 1] }}
             >
-              Responda algumas perguntas e nossa equipe pesquisa o mercado
-              para encontrar as melhores opções. Gratuito e sem compromisso.
+              Responda algumas perguntas. Nossa equipe pesquisa o mercado
+              e encontra as melhores opções. Gratuito.
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-3 mb-10"
-              {...fadeUp(0.24)}
+              className="flex flex-col sm:flex-row gap-4 mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 700, delay: 240, ease: [0.16, 1, 0.3, 1] }}
             >
               <button
-                onClick={() =>
-                  document
-                    .getElementById("diagnostic")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[11px] bg-orange-500 text-white text-sm font-semibold hover:bg-orange-600 transition-all duration-200 shadow-sm"
+                onClick={() => scrollTo("#diagnostico")}
+                className="btn-primary group w-full sm:w-auto"
               >
                 Começar diagnóstico gratuito
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                <ChevronRight
+                  className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
               </button>
               <button
-                onClick={() =>
-                  document
-                    .getElementById("como-funciona")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded-[11px] border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
+                onClick={() => scrollTo("#como-funciona")}
+                className="btn-ghost w-full sm:w-auto"
               >
                 Como funciona
               </button>
             </motion.div>
 
             <motion.div
-              className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-400"
-              {...fadeUp(0.32)}
+              className="flex flex-wrap items-center gap-x-8 gap-y-3 text-body-sm text-[var(--fg-muted)]"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 700, delay: 320, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className="inline-flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5" />
+              <span className="inline-flex items-center gap-2">
+                <Clock className="w-4 h-4 text-[var(--accent-tertiary)]" aria-hidden="true" />
                 Menos de 2 min
               </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5" />
+              <span className="inline-flex items-center gap-2">
+                <Shield className="w-4 h-4 text-[var(--accent-tertiary)]" aria-hidden="true" />
                 100% gratuito
               </span>
-              <span className="hidden sm:inline-flex items-center gap-1.5">
-                <div className="w-1 h-1 rounded-full bg-green-500" />
+              <span className="inline-flex items-center gap-2">
+                <Check className="w-4 h-4 text-[var(--color-success)]" aria-hidden="true" />
                 Sem compromisso
               </span>
             </motion.div>
@@ -96,26 +99,43 @@ export const Hero = () => {
           {/* ── Right: Product Mockup ───────────── */}
           <motion.div
             className="relative"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 800, delay: 200, ease: [0.16, 1, 0.3, 1] }}
           >
             {/* Decorative shapes for glassmorphism depth */}
-            <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-blue-600/[0.04]" />
-            <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-orange-500/[0.05]" />
-            <div className="absolute top-1/2 right-0 w-16 h-16 rounded-full bg-blue-600/[0.03]" />
+            <div className="deco-shapes">
+              <div
+                className="absolute -top-10 -right-10 w-40 h-40"
+                style={{
+                  background: "radial-gradient(circle, rgba(26, 26, 46, 0.08) 0%, transparent 70%)",
+                }}
+              />
+              <div
+                className="absolute -bottom-8 -left-8 w-32 h-32"
+                style={{
+                  background: "radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%)",
+                }}
+              />
+              <div
+                className="absolute top-1/2 right-0 w-24 h-24"
+                style={{
+                  background: "radial-gradient(circle, rgba(0, 102, 204, 0.04) 0%, transparent 70%)",
+                }}
+              />
+            </div>
 
-            <div className="relative glass-card rounded-2xl overflow-hidden">
+            <div className="relative glass-card rounded-[24px] overflow-hidden">
               {/* Browser chrome */}
-              <div className="flex items-center gap-1.5 px-4 py-3 bg-gray-50/80 border-b border-gray-200/60">
+              <div className="flex items-center gap-2 px-4 py-3 bg-[var(--color-bg-tertiary)]/80 border-b border-[var(--border-subtle)]">
                 <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-gray-200" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-gray-200" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-gray-200" />
+                  <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+                  <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+                  <div className="w-3 h-3 rounded-full bg-[#28C840]" />
                 </div>
                 <div className="flex-1 flex justify-center">
-                  <div className="px-4 py-1 rounded-md bg-white border border-gray-200/60">
-                    <span className="text-[10px] text-gray-400 font-mono">
+                  <div className="px-3 py-1 rounded-md bg-[var(--color-bg-secondary)] border border-[var(--border-subtle)]">
+                    <span className="text-[10px] font-mono text-[var(--fg-muted)]">
                       nextcar.com.br/diagnostico
                     </span>
                   </div>
@@ -123,53 +143,69 @@ export const Hero = () => {
               </div>
 
               {/* App content */}
-              <div className="p-8 md:p-10 bg-white">
+              <div className="p-8 md:p-10 bg-[var(--color-bg-secondary)]">
                 <div className="max-w-xs mx-auto">
                   {/* Progress */}
                   <div className="mb-8">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">
+                      <span className="text-overline text-[var(--fg-muted)]">
                         Etapa 1 de 6
                       </span>
-                      <span className="text-[10px] text-gray-300 font-mono">
+                      <span className="text-[10px] font-mono text-[var(--fg-muted)]">
                         17%
                       </span>
                     </div>
-                    <div className="h-[3px] bg-gray-100 rounded-full">
-                      <div className="h-[3px] w-[17%] bg-blue-600 rounded-full transition-all" />
+                    <div className="h-1 bg-[var(--color-bg-tertiary)] rounded-full">
+                      <motion.div
+                        className="h-1 w-[17%] bg-[var(--accent-tertiary)] rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: "17%" }}
+                        transition={{ duration: 800, delay: 400, ease: [0.16, 1, 0.3, 1] }}
+                      />
                     </div>
                   </div>
 
                   {/* Question */}
                   <div className="mb-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1.5 tracking-tight">
+                    <h3 className="text-h3 text-[var(--fg)] mb-1.5 tracking-tight">
                       Qual seu nome?
                     </h3>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-body-sm text-[var(--fg-muted)]">
                       Para personalizar sua experiência
                     </p>
                   </div>
 
-                  {/* Input */}
-                  <div className="mb-6">
-                    <div className="w-full px-3.5 py-3 text-sm border border-gray-200 rounded-[10px] bg-white text-gray-900">
-                      João Silva
-                      <span className="inline-block w-[2px] h-4 bg-blue-600 ml-0.5 animate-pulse align-text-bottom" />
+                  {/* Input with animated cursor */}
+                  <div className="mb-8">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        className="input-base w-full px-4 py-3.5 text-body pl-0 pr-8"
+                        value="João Silva"
+                        readOnly
+                        aria-label="Nome de exemplo"
+                      />
+                      <motion.span
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-[2px] h-6 bg-[var(--accent-tertiary)]"
+                        animate={{ opacity: [1, 0, 1] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                        aria-hidden="true"
+                      />
                     </div>
                   </div>
 
                   {/* Navigation */}
-                  <div className="flex items-center justify-end">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[10px] bg-orange-500 text-white text-xs font-semibold">
+                  <div className="flex items-center justify-end mb-8">
+                    <button className="btn-primary group" disabled>
                       Continuar
-                      <ArrowRight className="w-3 h-3" />
-                    </div>
+                      <ChevronRight className="w-4 h-4" aria-hidden="true" />
+                    </button>
                   </div>
 
                   {/* Security note */}
-                  <div className="mt-6 pt-4 border-t border-gray-100">
-                    <div className="flex items-center gap-1.5 text-[10px] text-gray-300">
-                      <Shield className="w-3 h-3 text-blue-500" />
+                  <div className="pt-4 border-t border-[var(--border-subtle)]">
+                    <div className="flex items-center gap-2 text-caption text-[var(--fg-muted)]">
+                      <Shield className="w-4 h-4 text-[var(--color-success)] flex-shrink-0" aria-hidden="true" />
                       Seus dados estão protegidos
                     </div>
                   </div>

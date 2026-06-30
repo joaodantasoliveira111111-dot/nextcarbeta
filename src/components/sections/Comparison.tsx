@@ -22,49 +22,49 @@ const nextcar = [
 
 export const Comparison = () => {
   return (
-    <section className="section-padding bg-gray-50">
+    <section className="section-padding bg-[var(--color-bg-tertiary)]">
       <div className="container-max">
         <motion.div
-          className="text-center mb-14 md:mb-16"
-          initial={{ opacity: 0, y: 12 }}
+          className="text-center mb-12 md:mb-14 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 600, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h2 className="font-display text-2xl md:text-3xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight mb-4 leading-tight">
+          <h2 className="text-display-lg text-[var(--fg)] tracking-tight mb-4 leading-tight">
             Comprar carro não deveria
             <br className="hidden sm:block" /> dar tanto trabalho
           </h2>
-          <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">
+          <p className="text-body-lg text-[var(--fg-secondary)] leading-relaxed">
             Veja a diferença entre fazer tudo sozinho e ter a NextCar
             pesquisando por você
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
           {/* Sozinho */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 600, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="p-6 md:p-8 border border-gray-200 rounded-2xl bg-white h-full">
-              <div className="flex items-center gap-2.5 mb-7">
-                <div className="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center">
-                  <X className="w-3.5 h-3.5 text-red-400" />
+            <div className="p-6 md:p-8 border border-[var(--border-subtle)] rounded-[16px] bg-[var(--color-bg-secondary)] h-full">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-lg bg-[var(--color-error)]/10 flex items-center justify-center">
+                  <X className="w-5 h-5 text-[var(--color-error)]" aria-hidden="true" />
                 </div>
-                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <span className="text-overline text-[var(--color-error)]">
                   Sozinho
                 </span>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-5">
                 {traditional.map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-sm text-gray-500 leading-relaxed"
+                    className="flex items-start gap-3 text-body text-[var(--fg-secondary)] leading-relaxed"
                   >
-                    <span className="text-gray-300 font-mono text-[11px] mt-[3px] flex-shrink-0">
+                    <span className="text-[11px] font-mono text-[var(--fg-muted)] mt-1 flex-shrink-0">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {item}
@@ -74,34 +74,46 @@ export const Comparison = () => {
             </div>
           </motion.div>
 
-          {/* Com a NextCar */}
+          {/* Com a/* Com a NextCar */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, delay: 0.08 }}
+            transition={{ duration: 600, delay: 80, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="relative p-6 md:p-8 rounded-2xl bg-white h-full overflow-hidden">
+            <div className="relative p-6 md:p-8 rounded-[16px] bg-[var(--color-bg-secondary)] h-full overflow-hidden">
               {/* Decorative bg shapes for glass effect */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-blue-600/[0.04]" />
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-orange-500/[0.04]" />
+              <div className="deco-shapes">
+                <div
+                  className="absolute -top-6 -right-6 w-24 h-24"
+                  style={{
+                    background: "radial-gradient(circle, rgba(26, 26, 46, 0.04) 0%, transparent 70%)",
+                  }}
+                />
+                <div
+                  className="absolute -bottom-6 -left-6 w-20 h-20"
+                  style={{
+                    background: "radial-gradient(circle, rgba(201, 168, 76, 0.03) 0%, transparent 70%)",
+                  }}
+                />
+              </div>
 
-              <div className="relative glass-card rounded-2xl p-6 md:p-8 h-full">
-                <div className="flex items-center gap-2.5 mb-7">
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center">
-                    <Check className="w-3.5 h-3.5 text-blue-600" />
+              <div className="relative glass-card rounded-[16px] p-6 md:p-8 h-full">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-10 h-10 rounded-lg bg-[var(--color-success)]/10 flex items-center justify-center">
+                    <Check className="w-5 h-5 text-[var(--color-success)]" aria-hidden="true" />
                   </div>
-                  <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+                  <span className="text-overline text-[var(--color-success)]">
                     Com a NextCar
                   </span>
                 </div>
-                <ul className="space-y-4">
+                <ul className="space-y-5">
                   {nextcar.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-3 text-sm text-gray-700 font-medium leading-relaxed"
+                      className="flex items-start gap-3 text-body text-[var(--fg)] font-medium leading-relaxed"
                     >
-                      <span className="text-blue-500 font-mono text-[11px] mt-[3px] flex-shrink-0">
+                      <span className="text-[11px] font-mono text-[var(--accent-tertiary)] mt-1 flex-shrink-0">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       {item}

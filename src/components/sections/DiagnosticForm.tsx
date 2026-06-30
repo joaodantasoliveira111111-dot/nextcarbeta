@@ -41,25 +41,95 @@ const steps = [
   { label: "Detalhes", number: 6 },
 ];
 
+const budgetOptions = [
+  "Até R$ 30 mil",
+  "Até R$ 50 mil",
+  "Até R$ 80 mil",
+  "Até R$ 120 mil",
+  "Até R$ 200 mil",
+  "Acima de R$ 200 mil",
+];
+
+const usageOptions = [
+  { value: "daily" as const, label: "Uso diário" },
+  { value: "family" as const, label: "Família / Viagens" },
+  { value: "work" as const, label: "Trabalho" },
+  { value: "leisure" as const, label: "Lazer" },
+  { value: "first" as const, label: "Primeiro carro" },
+] as const;
+
+const financingOptions = [
+  { value: "yes" as const, label: "Sim" },
+  { value: "maybe" as const, label: "Talvez" },
+  { value: "no" as const, label: "Não" },
+] as const;
+
+const tradeInOptions = [
+  { value: "yes" as const, label: "Sim" },
+  { value: "no" as const, label: "Não" },
+] as const;
+
 const OptionPill = ({
   selected,
   onClick,
   children,
+  disabled = false,
 }: {
   selected: boolean;
   onClick: () => void;
   children: React.ReactNode;
+  disabled?: boolean;
 }) => (
   <button
     onClick={onClick}
-    className={`px-4 py-2.5 rounded-[10px] text-sm border transition-all duration-200 ${
-      selected
-        ? "border-blue-500 bg-blue-50 text-blue-700 font-medium"
-        : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
-    }`}
+    disabled={disabled}
+    className={`pill-base ${selected ? "selected" : ""} ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
   >
     {children}
   </button>
+);
+
+const Input = ({
+  label,
+  type = "text",
+  placeholder,
+  value,
+  onChange,
+  error = false,
+  autoFocus = false,
+  required = false,
+}: {
+  label?: string;
+  type?: string;
+  placeholder?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: boolean;
+  autoFocus?: boolean;
+  required?: boolean;
+}) => (
+  <div className="w-full">
+    {label && (
+      <label className="block text-caption text-[var(--fg-secondary)] mb-1.5 font-medium">
+        {label} {required && <span className="text-[var(--color-error)]" aria-hidden="true">*</span>}
+      </label>
+    )}
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      className={`input-base ${error ? "error" : ""}`}
+      autoFocus={autoFocus}
+      aria-invalid={error}
+      aria-describedby={error ? `${label}-error` : undefined}
+    />
+    {error && (
+      <p id={`${label}-error`} className="mt-1.5 text-caption text-[var(--color-error)]" role="alert">
+        Preencha este campo
+      </p>
+    )}
+  </div>
 );
 
 export const DiagnosticForm = () => {
@@ -79,9 +149,13 @@ export const DiagnosticForm = () => {
   const [completed, setCompleted] = React.useState(false);
   const [analysing, setAnalysing] = React.useState(false);
   const [analysingStep, setAnalysingStep] = React.useState(0);
+  const [errors, setErrors] = React.useState<Record<string, boolean>>({});
 
   const update = <K extends keyof FormData>(field: K, value: FormData[K]) => {
     setData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field as string]) {
+      setErrors((prev) => ({ ...prev, [field as string]: false }));
+    }
   };
 
   const togglePriority = (p: string) => {
@@ -93,35 +167,64 @@ export const DiagnosticForm = () => {
     }));
   };
 
-  const canProceed = () => {
+  const validateStep = () => {
+    const newErrors: Record<string, boolean> = {};
+    let valid = true;
+
     switch (step) {
       case 0:
-        return (
-          data.name.trim().length >= 2 && data.whatsapp.trim().length >= 10
-        );
+        if (data.name.trim().length < 2) {
+          newErrors.name = true;
+          valid = false;
+        }
+        if (data.whatsapp.trim().length < 10) {
+          newErrors.whatsapp = true;
+          valid = false;
+        }
+        break;
       case 1:
-        return data.city.trim().length >= 2;
+        if (data.city.trim().length < 2) {
+          newErrors.city = true;
+          valid = false;
+        }
+        break;
       case 2:
-        return (
-          data.knowsCar !== null &&
-          (data.knowsCar === "no" || data.carModel.trim().length >= 2)
-        );
+        if (data.knowsCar === null) {
+          newErrors.knowsCar = true;
+          valid = false;
+        } else if (data.knowsCar === "yes" && data.carModel.trim().length < 2) {
+          newErrors.carModel = true;
+          valid = false;
+        }
+        break;
       case 3:
-        return data.budget !== "";
+        if (!data.budget) {
+          newErrors.budget = true;
+          valid = false;
+        }
+        break;
       case 4:
-        return data.usage !== null;
+        if (!data.usage) {
+          newErrors.usage = true;
+          valid = false;
+        }
+        break;
       case 5:
-        return true;
-      default:
-        return false;
+        valid = true;
+        break;
     }
+
+    setErrors(newErrors);
+    return valid;
   };
 
   const goNext = () => {
-    if (step < steps.length - 1) {
-      setStep((s) => s + 1);
-    } else {
-      startAnalysis();
+    if (validateStep()) {
+      if (step < steps.length - 1) {
+        setStep((s) => s + 1);
+      } else {
+        startAnalysis();
+      }
     }
   };
 
@@ -148,40 +251,40 @@ export const DiagnosticForm = () => {
     }, messages.length * 700 + 600);
   };
 
-  const progress = Math.round((step / (steps.length - 1)) * 100);
+  const progress = Math.round(((step + 1) / steps.length) * 100);
 
   /* ── Completed State ─────────────────────── */
   if (completed) {
     return (
-      <section className="section-padding bg-white" id="diagnostic">
-        <div className="max-w-md mx-auto text-center px-4">
+      <section className="section-padding bg-[var(--bg)]" id="diagnostico">
+        <div className="container-max max-w-md mx-auto text-center px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 500, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-6">
-              <Check className="w-6 h-6 text-blue-600" />
+            <div className="w-16 h-16 rounded-full bg-[var(--color-success)]/10 flex items-center justify-center mx-auto mb-6">
+              <Check className="w-8 h-8 text-[var(--color-success)]" aria-hidden="true" />
             </div>
 
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+            <h3 className="text-display-md text-[var(--fg)] mb-3 tracking-tight">
               Diagnóstico concluído
             </h3>
-            <p className="text-gray-500 text-sm leading-relaxed mb-8 max-w-sm mx-auto">
+            <p className="text-body text-[var(--fg-secondary)] leading-relaxed mb-10 max-w-sm mx-auto">
               Nossa equipe já iniciou a pesquisa. Em breve um consultor NextCar
               entrará em contato pelo WhatsApp com as melhores opções.
             </p>
 
-            <div className="max-w-xs mx-auto mb-8">
-              <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+            <div className="max-w-xs mx-auto mb-10">
+              <div className="h-1.5 bg-[var(--color-bg-tertiary)] rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-blue-600 rounded-full"
+                  className="h-full bg-[var(--accent-secondary)] rounded-full"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 1000, ease: [0.16, 1, 0.3, 1] }}
                 />
               </div>
-              <div className="flex justify-between mt-2 text-[10px] text-gray-400">
+              <div className="flex justify-between mt-3 text-caption text-[var(--fg-muted)]">
                 <span>Processando</span>
                 <span>100%</span>
               </div>
@@ -189,7 +292,7 @@ export const DiagnosticForm = () => {
 
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="px-5 py-2.5 rounded-[10px] bg-orange-500 text-white text-sm font-semibold hover:bg-orange-600 transition-colors"
+              className="btn-primary w-full sm:w-auto"
             >
               Voltar ao início
             </button>
@@ -202,14 +305,17 @@ export const DiagnosticForm = () => {
   /* ── Analysing State ─────────────────────── */
   if (analysing) {
     return (
-      <section className="section-padding bg-white" id="diagnostic">
-        <div className="max-w-sm mx-auto text-center px-4">
-          <div className="mb-8">
-            <div className="flex items-center justify-center gap-1.5 mb-2">
-              <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
-            </div>
-            <p className="text-sm text-gray-500">Processando diagnóstico</p>
-          </div>
+      <section className="section-padding bg-[var(--bg)]" id="diagnostico">
+        <div className="container-max max-w-sm mx-auto text-center px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 500, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-10"
+          >
+            <Loader2 className="w-10 h-10 text-[var(--accent-tertiary)] animate-spin mx-auto mb-4" aria-hidden="true" />
+            <p className="text-body text-[var(--fg-secondary)]">Processando diagnóstico</p>
+          </motion.div>
 
           <div className="space-y-3 text-left">
             {[
@@ -219,25 +325,29 @@ export const DiagnosticForm = () => {
               "Preparando pesquisa",
               "Quase pronto",
             ].map((msg, i) => (
-              <div
+              <motion.div
                 key={msg}
-                className={`flex items-center gap-3 text-sm transition-all duration-300 ${
-                  i < analysingStep ? "text-gray-700" : "text-gray-300"
+                className={`flex items-center gap-3 text-body transition-all duration-300 ${
+                  i < analysingStep ? "text-[var(--fg)]" : "text-[var(--fg-muted)]"
                 }`}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 300, delay: i * 100 }}
               >
                 <div
-                  className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                     i < analysingStep
-                      ? "bg-blue-600 border-blue-600"
-                      : "border-gray-200"
+                      ? "bg-[var(--color-success)] border-[var(--color-success)]"
+                      : i === analysingStep
+                      ? "border-[var(--accent-tertiary)]"
+                      : "border-[var(--border-default)]"
                   }`}
                 >
-                  {i < analysingStep && (
-                    <Check className="w-3 h-3 text-white" />
-                  )}
+                  {i < analysingStep && <Check className="w-4 h-4 text-white" />}
+                  {i === analysingStep && <Loader2 className="w-4 h-4 text-[var(--accent-tertiary)] animate-spin" />}
                 </div>
                 {msg}
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -247,67 +357,84 @@ export const DiagnosticForm = () => {
 
   /* ── Form ────────────────────────────────── */
   return (
-    <section className="section-padding bg-white" id="diagnostic">
-      <div className="max-w-md mx-auto px-4">
+    <section className="section-padding bg-[var(--bg)]" id="diagnostico">
+      <div className="container-max max-w-md mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 600, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs text-gray-400 mb-3">
-            <span className="font-medium text-gray-600">Diagnóstico</span>
-            <span className="text-gray-300">/</span>
-            <span>{steps[step].label}</span>
-            <span className="ml-auto text-gray-300 font-mono">
-              {step + 1} de {steps.length}
-            </span>
-          </div>
-
-          {/* Progress bar */}
-          <div className="h-[3px] bg-gray-100 rounded-full mb-12">
-            <div
-              className="h-[3px] bg-blue-600 rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${progress}%` }}
-            />
+          {/* Progress indicator */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-caption text-[var(--fg-secondary)] font-medium">
+                Diagnóstico
+              </span>
+              <span className="text-caption font-mono text-[var(--fg-muted)]">
+                {step + 1} de {steps.length}
+              </span>
+            </div>
+            <div className="h-1.5 bg-[var(--color-bg-tertiary)] rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-[var(--accent-tertiary)] rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 600, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </div>
+            <div className="flex justify-between mt-2 text-overline text-[var(--fg-muted)]">
+              {steps.map((s, i) => (
+                <span
+                  key={s.label}
+                  className={`flex-1 text-center transition-colors ${
+                    i <= step ? "text-[var(--accent-tertiary)] font-semibold" : ""
+                  }`}
+                >
+                  {s.label}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Step content */}
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 16, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -16, scale: 1.02 }}
+              transition={{ duration: 300, ease: [0.16, 1, 0.3, 1] }}
             >
               {step === 0 && (
                 <div className="space-y-6">
-                  <h3 className="font-display text-2xl md:text-[1.75rem] font-bold text-gray-900 tracking-tight">
-                    Qual seu nome?
-                  </h3>
+                  <div>
+                    <h3 className="text-h1 text-[var(--fg)] tracking-tight mb-1">
+                      Qual seu nome?
+                    </h3>
+                    <p className="text-body text-[var(--fg-secondary)]">
+                      Para personalizar sua experiência
+                    </p>
+                  </div>
                   <div className="space-y-4">
-                    <input
-                      type="text"
+                    <Input
+                      label="Nome completo"
                       placeholder="Seu nome completo"
                       value={data.name}
                       onChange={(e) => update("name", e.target.value)}
-                      className="w-full px-4 py-3 text-sm border border-gray-200 rounded-[10px] outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all bg-white text-gray-900 placeholder-gray-400"
+                      error={errors.name}
+                      required
                       autoFocus
                     />
-                    <div>
-                      <label className="block text-sm text-gray-500 mb-1.5 font-medium">
-                        WhatsApp
-                      </label>
-                      <input
-                        type="tel"
-                        placeholder="(81) 99999-9999"
-                        value={data.whatsapp}
-                        onChange={(e) => update("whatsapp", e.target.value)}
-                        className="w-full px-4 py-3 text-sm border border-gray-200 rounded-[10px] outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all bg-white text-gray-900 placeholder-gray-400"
-                      />
-                    </div>
+                    <Input
+                      label="WhatsApp"
+                      type="tel"
+                      placeholder="(81) 99999-9999"
+                      value={data.whatsapp}
+                      onChange={(e) => update("whatsapp", e.target.value)}
+                      error={errors.whatsapp}
+                      required
+                    />
                   </div>
                 </div>
               )}
@@ -315,19 +442,20 @@ export const DiagnosticForm = () => {
               {step === 1 && (
                 <div className="space-y-6">
                   <div>
-                    <h3 className="font-display text-2xl md:text-[1.75rem] font-bold text-gray-900 tracking-tight mb-1">
+                    <h3 className="text-h1 text-[var(--fg)] tracking-tight mb-1">
                       Qual sua cidade?
                     </h3>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-body text-[var(--fg-secondary)]">
                       Atendemos Recife e toda Região Metropolitana
                     </p>
                   </div>
-                  <input
-                    type="text"
+                  <Input
+                    label="Cidade"
                     placeholder="Sua cidade"
                     value={data.city}
                     onChange={(e) => update("city", e.target.value)}
-                    className="w-full px-4 py-3 text-sm border border-gray-200 rounded-[10px] outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all bg-white text-gray-900 placeholder-gray-400"
+                    error={errors.city}
+                    required
                     autoFocus
                   />
                 </div>
@@ -335,15 +463,18 @@ export const DiagnosticForm = () => {
 
               {step === 2 && (
                 <div className="space-y-6">
-                  <h3 className="font-display text-2xl md:text-[1.75rem] font-bold text-gray-900 tracking-tight">
+                  <h3 className="text-h1 text-[var(--fg)] tracking-tight">
                     Você já sabe qual carro procura?
                   </h3>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3" role="radiogroup" aria-label="Sabe qual carro">
                     {(["yes", "no"] as const).map((opt) => (
                       <OptionPill
                         key={opt}
                         selected={data.knowsCar === opt}
-                        onClick={() => update("knowsCar", opt)}
+                        onClick={() => {
+                          update("knowsCar", opt);
+                          if (opt === "no") update("carModel", "");
+                        }}
                       >
                         {opt === "yes" ? "Sim" : "Ainda não"}
                       </OptionPill>
@@ -351,19 +482,17 @@ export const DiagnosticForm = () => {
                   </div>
                   {data.knowsCar === "yes" && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2 }}
+                      initial={{ opacity: 0, y: 10, height: 0 }}
+                      animate={{ opacity: 1, y: 0, height: "auto" }}
+                      transition={{ duration: 300 }}
                     >
-                      <label className="block text-sm text-gray-500 mb-1.5 font-medium">
-                        Qual carro?
-                      </label>
-                      <input
-                        type="text"
+                      <Input
+                        label="Qual carro?"
                         placeholder="Ex: Honda HR-V 2024"
                         value={data.carModel}
                         onChange={(e) => update("carModel", e.target.value)}
-                        className="w-full px-4 py-3 text-sm border border-gray-200 rounded-[10px] outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all bg-white text-gray-900 placeholder-gray-400"
+                        error={errors.carModel}
+                        required
                         autoFocus
                       />
                     </motion.div>
@@ -373,18 +502,11 @@ export const DiagnosticForm = () => {
 
               {step === 3 && (
                 <div className="space-y-6">
-                  <h3 className="font-display text-2xl md:text-[1.75rem] font-bold text-gray-900 tracking-tight">
+                  <h3 className="text-h1 text-[var(--fg)] tracking-tight">
                     Qual seu orçamento máximo?
                   </h3>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    {[
-                      "Até R$ 30 mil",
-                      "Até R$ 50 mil",
-                      "Até R$ 80 mil",
-                      "Até R$ 120 mil",
-                      "Até R$ 200 mil",
-                      "Acima de R$ 200 mil",
-                    ].map((opt) => (
+                  <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Orçamento">
+                    {budgetOptions.map((opt) => (
                       <OptionPill
                         key={opt}
                         selected={data.budget === opt}
@@ -394,31 +516,22 @@ export const DiagnosticForm = () => {
                       </OptionPill>
                     ))}
                   </div>
+                  {errors.budget && (
+                    <p className="text-caption text-[var(--color-error)]" role="alert">
+                      Selecione uma opção
+                    </p>
+                  )}
                 </div>
               )}
 
               {step === 4 && (
                 <div className="space-y-8">
                   <div>
-                    <h3 className="font-display text-2xl md:text-[1.75rem] font-bold text-gray-900 tracking-tight mb-5">
+                    <h3 className="text-h1 text-[var(--fg)] tracking-tight mb-5">
                       Para que vai usar o carro?
                     </h3>
-                    <div className="flex flex-wrap gap-2.5">
-                      {(
-                        [
-                          { value: "daily" as const, label: "Uso diário" },
-                          {
-                            value: "family" as const,
-                            label: "Família / Viagens",
-                          },
-                          { value: "work" as const, label: "Trabalho" },
-                          { value: "leisure" as const, label: "Lazer" },
-                          {
-                            value: "first" as const,
-                            label: "Primeiro carro",
-                          },
-                        ] as const
-                      ).map((opt) => (
+                    <div className="flex flex-wrap gap-3" role="radiogroup" aria-label="Uso do carro">
+                      {usageOptions.map((opt) => (
                         <OptionPill
                           key={opt.value}
                           selected={data.usage === opt.value}
@@ -428,15 +541,20 @@ export const DiagnosticForm = () => {
                         </OptionPill>
                       ))}
                     </div>
+                    {errors.usage && (
+                      <p className="mt-2 text-caption text-[var(--color-error)]" role="alert">
+                        Selecione uma opção
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 mb-3 font-medium">
+                    <p className="text-caption text-[var(--fg-secondary)] mb-3 font-medium">
                       Prioridades{" "}
-                      <span className="text-gray-400 font-normal">
-                        (opcional)
+                      <span className="text-[var(--fg-muted)] font-normal">
+                        (opcional, selecione quantas quiser)
                       </span>
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2" role="group" aria-label="Prioridades">
                       {priorities.map((p) => (
                         <OptionPill
                           key={p}
@@ -453,41 +571,37 @@ export const DiagnosticForm = () => {
 
               {step === 5 && (
                 <div className="space-y-8">
-                  <h3 className="font-display text-2xl md:text-[1.75rem] font-bold text-gray-900 tracking-tight">
+                  <h3 className="text-h1 text-[var(--fg)] tracking-tight">
                     Mais alguns detalhes
                   </h3>
                   <div>
-                    <p className="text-sm text-gray-500 mb-3 font-medium">
+                    <p className="text-caption text-[var(--fg-secondary)] mb-3 font-medium">
                       Tem interesse em financiamento?
                     </p>
-                    <div className="flex gap-2.5">
-                      {(["yes", "maybe", "no"] as const).map((opt) => (
+                    <div className="flex gap-3" role="radiogroup" aria-label="Financiamento">
+                      {financingOptions.map((opt) => (
                         <OptionPill
-                          key={opt}
-                          selected={data.financing === opt}
-                          onClick={() => update("financing", opt)}
+                          key={opt.value}
+                          selected={data.financing === opt.value}
+                          onClick={() => update("financing", opt.value)}
                         >
-                          {opt === "yes"
-                            ? "Sim"
-                            : opt === "maybe"
-                              ? "Talvez"
-                              : "Não"}
+                          {opt.label}
                         </OptionPill>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 mb-3 font-medium">
+                    <p className="text-caption text-[var(--fg-secondary)] mb-3 font-medium">
                       Possui veículo para troca?
                     </p>
-                    <div className="flex gap-2.5">
-                      {(["yes", "no"] as const).map((opt) => (
+                    <div className="flex gap-3" role="radiogroup" aria-label="Troca">
+                      {tradeInOptions.map((opt) => (
                         <OptionPill
-                          key={opt}
-                          selected={data.tradeIn === opt}
-                          onClick={() => update("tradeIn", opt)}
+                          key={opt.value}
+                          selected={data.tradeIn === opt.value}
+                          onClick={() => update("tradeIn", opt.value)}
                         >
-                          {opt === "yes" ? "Sim" : "Não"}
+                          {opt.label}
                         </OptionPill>
                       ))}
                     </div>
@@ -502,42 +616,37 @@ export const DiagnosticForm = () => {
             <button
               onClick={goBack}
               disabled={step === 0}
-              className={`inline-flex items-center gap-1.5 text-sm transition-colors ${
+              className={`inline-flex items-center gap-2 text-body transition-colors ${
                 step === 0
-                  ? "text-gray-300 cursor-default"
-                  : "text-gray-500 hover:text-gray-900"
+                  ? "text-[var(--fg-muted)] cursor-default"
+                  : "text-[var(--fg-secondary)] hover:text-[var(--fg)]"
               }`}
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-5 h-5" aria-hidden="true" />
               Voltar
             </button>
             <button
               onClick={goNext}
-              disabled={!canProceed()}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold transition-all duration-200 ${
-                canProceed()
-                  ? "bg-orange-500 text-white hover:bg-orange-600 shadow-sm"
-                  : "bg-gray-100 text-gray-300 cursor-not-allowed"
-              }`}
+              className="btn-primary group"
             >
               {step === steps.length - 1 ? "Finalizar" : "Continuar"}
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </button>
           </div>
 
           {/* Privacy */}
-          <div className="flex items-center justify-center gap-4 mt-8 pt-6 border-t border-gray-100">
-            <div className="flex items-center gap-1.5 text-[11px] text-gray-400">
-              <Shield className="w-3 h-3 text-blue-500" />
+          <div className="flex items-center justify-center gap-5 mt-10 pt-6 border-t border-[var(--border-subtle)]">
+            <div className="flex items-center gap-1.5 text-caption text-[var(--fg-muted)]">
+              <Shield className="w-4 h-4 text-[var(--color-success)] flex-shrink-0" aria-hidden="true" />
               Dados protegidos
             </div>
-            <span className="text-gray-200">·</span>
-            <p className="text-[11px] text-gray-400">
-              <a href="#" className="text-blue-600 hover:underline">
+            <span className="text-[var(--border-default)]" aria-hidden="true">·</span>
+            <p className="text-caption text-[var(--fg-muted)]">
+              <a href="#" className="text-[var(--accent-tertiary)] hover:underline">
                 Privacidade
               </a>{" "}
               e{" "}
-              <a href="#" className="text-blue-600 hover:underline">
+              <a href="#" className="text-[var(--accent-tertiary)] hover:underline">
                 Termos
               </a>
             </p>

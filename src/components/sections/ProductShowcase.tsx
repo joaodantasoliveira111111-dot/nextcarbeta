@@ -12,58 +12,50 @@ const screens = [
     content: (
       <div className="space-y-4">
         <div>
-          <p className="text-xs text-gray-400 mb-1.5">Qual seu nome?</p>
-          <div className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-700 bg-white">
+          <p className="text-caption text-[var(--fg-muted)] mb-1.5">Qual seu nome?</p>
+          <div className="input-base px-3 py-2 text-body-sm bg-[var(--color-bg-tertiary)]">
             João Silva
           </div>
         </div>
         <div>
-          <p className="text-xs text-gray-400 mb-1.5">WhatsApp</p>
-          <div className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-400 bg-gray-50">
+          <p className="text-caption text-[var(--fg-muted)] mb-1.5">WhatsApp</p>
+          <div className="input-base px-3 py-2 text-body-sm bg-[var(--color-bg-tertiary)] text-[var(--fg-muted)]">
             (81) 99999-9999
           </div>
         </div>
         <div className="flex justify-end">
-          <div className="px-3 py-1.5 rounded-lg bg-orange-500 text-white text-xs font-medium">
+          <button className="btn-primary text-body-sm px-3 py-2" disabled>
             Continuar
-          </div>
+          </button>
         </div>
       </div>
     ),
   },
   {
-    step: "Etapa 3",
+    step: "Etapa 2",
     title: "Analisando perfil",
     description: "Processamento das preferências",
     content: (
       <div className="space-y-3">
-        {["Recebendo dados", "Analisando preferências", "Calculando perfil"].map(
-          (msg, i) => (
-            <div key={msg} className="flex items-center gap-2.5">
-              <div
-                className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  i < 2
-                    ? "bg-blue-600"
-                    : "border border-gray-200"
-                }`}
-              >
-                {i < 2 && (
-                  <CheckCircle className="w-3 h-3 text-white" />
-                )}
-                {i === 2 && (
-                  <Loader2 className="w-2.5 h-2.5 text-gray-300 animate-spin" />
-                )}
-              </div>
-              <span
-                className={`text-xs ${
-                  i < 2 ? "text-gray-700" : "text-gray-400"
-                }`}
-              >
-                {msg}
-              </span>
+        {[
+          "Recebendo dados",
+          "Analisando preferências",
+          "Calculando perfil ideal",
+        ].map((msg, i) => (
+          <div key={msg} className="flex items-center gap-2.5">
+            <div
+              className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
+                i < 2 ? "bg-[var(--color-success)]" : "border border-[var(--border-default)]"
+              }`}
+            >
+              {i < 2 && <CheckCircle className="w-3.5 h-3.5 text-white" />}
+              {i === 2 && <Loader2 className="w-3.5 h-3.5 text-[var(--fg-muted)] animate-spin" />}
             </div>
-          )
-        )}
+            <span className={`text-body-sm ${i < 2 ? "text-[var(--fg)]" : "text-[var(--fg-muted)]"}`}>
+              {msg}
+            </span>
+          </div>
+        ))}
       </div>
     ),
   },
@@ -74,24 +66,24 @@ const screens = [
     content: (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-gray-700">Novo lead</span>
-          <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-600">
+          <span className="text-body-sm font-medium text-[var(--fg)]">Novo lead</span>
+          <span className="px-2 py-0.5 rounded text-caption font-medium bg-[var(--accent-tertiary)]/10 text-[var(--accent-tertiary)]">
             Ativo
           </span>
         </div>
-        <div className="h-[1px] bg-gray-100" />
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-400">Orçamento</span>
-            <span className="text-gray-700">Até R$ 80 mil</span>
+        <div className="h-[1px] bg-[var(--border-subtle)]" />
+        <div className="space-y-2.5">
+          <div className="flex justify-between text-body-sm">
+            <span className="text-[var(--fg-muted)]">Orçamento</span>
+            <span className="text-[var(--fg)]">Até R$ 80 mil</span>
           </div>
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-400">Uso</span>
-            <span className="text-gray-700">Uso diário</span>
+          <div className="flex justify-between text-body-sm">
+            <span className="text-[var(--fg-muted)]">Uso</span>
+            <span className="text-[var(--fg)]">Uso diário</span>
           </div>
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-400">Prioridades</span>
-            <span className="text-gray-700">Economia, Segurança</span>
+          <div className="flex justify-between text-body-sm">
+            <span className="text-[var(--fg-muted)]">Prioridades</span>
+            <span className="text-[var(--fg)]">Economia, Segurança</span>
           </div>
         </div>
       </div>
@@ -104,20 +96,17 @@ const screens = [
     content: (
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <Search className="w-3.5 h-3.5 text-blue-600" />
-          <span className="text-xs text-gray-600 font-medium">
+          <Search className="w-4 h-4 text-[var(--accent-tertiary)]" aria-hidden="true" />
+          <span className="text-body-sm font-medium text-[var(--fg-secondary)]">
             42 veículos encontrados
           </span>
         </div>
-        <div className="h-[1px] bg-gray-100" />
+        <div className="h-[1px] bg-[var(--border-subtle)]" />
         {["Honda HR-V EXL 2024", "Toyota Corolla Cross 2024", "VW T-Cross Highline 2024"].map(
           (car) => (
-            <div
-              key={car}
-              className="flex items-center justify-between py-1"
-            >
-              <span className="text-xs text-gray-600">{car}</span>
-              <BarChart3 className="w-3 h-3 text-gray-300" />
+            <div key={car} className="flex items-center justify-between py-1.5">
+              <span className="text-body-sm text-[var(--fg-secondary)]">{car}</span>
+              <BarChart3 className="w-4 h-4 text-[var(--fg-muted)]" aria-hidden="true" />
             </div>
           )
         )}
@@ -131,8 +120,8 @@ const screens = [
     content: (
       <div className="space-y-3">
         <div className="flex items-center gap-2 mb-1">
-          <CheckCircle className="w-3.5 h-3.5 text-green-500" />
-          <span className="text-xs text-gray-600 font-medium">
+          <CheckCircle className="w-5 h-5 text-[var(--color-success)]" aria-hidden="true" />
+          <span className="text-body-sm font-medium text-[var(--fg-secondary)]">
             3 opções selecionadas
           </span>
         </div>
@@ -143,12 +132,12 @@ const screens = [
         ].map((car) => (
           <div
             key={car.name}
-            className="flex items-center justify-between py-1.5 px-2.5 rounded-lg bg-gray-50 border border-gray-100"
+            className="flex items-center justify-between py-2 px-3 rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--border-subtle)]"
           >
-            <span className="text-xs text-gray-700 font-medium">
+            <span className="text-body-sm text-[var(--fg)] font-medium">
               {car.name}
             </span>
-            <span className="text-[10px] text-blue-600 font-semibold">
+            <span className="text-caption text-[var(--accent-tertiary)] font-semibold">
               {car.match}
             </span>
           </div>
@@ -160,22 +149,22 @@ const screens = [
 
 export const ProductShowcase = () => {
   return (
-    <section className="section-padding bg-gray-50 overflow-hidden">
+    <section className="section-padding bg-[var(--bg)] overflow-hidden" id="produto">
       <div className="container-max">
         <motion.div
-          className="text-center mb-14 md:mb-16"
-          initial={{ opacity: 0, y: 12 }}
+          className="text-center mb-12 md:mb-14"
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 600, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="text-xs font-semibold text-blue-600 uppercase tracking-[0.15em] mb-4 block">
+          <span className="text-overline text-[var(--accent-tertiary)] mb-4 block">
             Produto
           </span>
-          <h2 className="font-display text-2xl md:text-3xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight mb-4 leading-tight">
+          <h2 className="text-display-lg text-[var(--fg)] tracking-tight mb-4 leading-tight">
             Veja como funciona na prática
           </h2>
-          <p className="text-gray-500 max-w-lg mx-auto leading-relaxed">
+          <p className="text-body-lg text-[var(--fg-secondary)] leading-relaxed max-w-lg mx-auto">
             Do diagnóstico à recomendação final — cada etapa
             projetada para encontrar seu carro ideal
           </p>
@@ -184,39 +173,51 @@ export const ProductShowcase = () => {
         {/* Horizontal scrollable showcase */}
         <div className="relative">
           {/* Decorative shapes */}
-          <div className="absolute top-1/4 left-0 w-32 h-32 rounded-full bg-blue-600/[0.03] -translate-x-1/2" />
-          <div className="absolute bottom-1/4 right-0 w-40 h-40 rounded-full bg-orange-500/[0.03] translate-x-1/2" />
+          <div className="deco-shapes">
+            <div
+              className="absolute top-1/4 left-0 w-40 h-40 -translate-x-1/2"
+              style={{
+                background: "radial-gradient(circle, rgba(26, 26, 46, 0.03) 0%, transparent 70%)",
+              }}
+            />
+            <div
+              className="absolute bottom-1/4 right-0 w-48 h-48 translate-x-1/2"
+              style={{
+                background: "radial-gradient(circle, rgba(201, 168, 76, 0.03) 0%, transparent 70%)",
+              }}
+            />
+          </div>
 
-          <div className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-5 md:overflow-visible md:pb-0">
+          <div className="flex gap-5 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0 lg:gap-6">
             {screens.map((screen, index) => (
               <motion.div
                 key={screen.title}
-                className="flex-shrink-0 w-[260px] md:w-auto snap-center"
-                initial={{ opacity: 0, y: 16 }}
+                className="flex-shrink-0 w-[300px] lg:w-auto snap-center"
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 500, delay: index * 100, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="glass-card rounded-2xl p-5 h-full">
+                <div className="glass-card rounded-[16px] p-6 h-full flex flex-col">
                   {/* Step label */}
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-[10px] font-semibold text-gray-300 uppercase tracking-widest">
+                  <div className="flex items-center gap-2 mb-5">
+                    <span className="text-overline text-[var(--fg-muted)]">
                       {screen.step}
                     </span>
                     {index < screens.length - 1 && (
-                      <ArrowRight className="w-3 h-3 text-gray-200 hidden md:block ml-auto" />
+                      <ArrowRight className="w-4 h-4 text-[var(--border-default)] hidden lg:block ml-auto" aria-hidden="true" />
                     )}
                   </div>
 
-                  <h3 className="text-sm font-semibold text-gray-900 mb-0.5 tracking-tight">
+                  <h3 className="text-h3 text-[var(--fg)] mb-1 tracking-tight">
                     {screen.title}
                   </h3>
-                  <p className="text-[11px] text-gray-400 mb-4">
+                  <p className="text-body-sm text-[var(--fg-muted)] mb-5">
                     {screen.description}
                   </p>
 
                   {/* Screen content */}
-                  <div className="p-3 rounded-xl bg-white border border-gray-100">
+                  <div className="flex-1 p-4 rounded-[12px] bg-[var(--color-bg-tertiary)] border border-[var(--border-subtle)]">
                     {screen.content}
                   </div>
                 </div>

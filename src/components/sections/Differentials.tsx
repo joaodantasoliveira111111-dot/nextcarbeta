@@ -39,54 +39,69 @@ const items = [
 
 export const Differentials = () => {
   return (
-    <section className="section-padding bg-white" id="beneficios">
+    <section className="section-padding bg-[var(--bg)] relative" id="diferenciais">
       <div className="container-max">
+        {/* Decorative shapes behind the grid */}
+        <div className="deco-shapes">
+          <div
+            className="absolute top-0 left-1/4 w-48 h-48"
+            style={{
+              background: "radial-gradient(circle, rgba(26, 26, 46, 0.02) 0%, transparent 70%)",
+            }}
+          />
+          <div
+            className="absolute bottom-0 right-1/4 w-40 h-40"
+            style={{
+              background: "radial-gradient(circle, rgba(201, 168, 76, 0.03) 0%, transparent 70%)",
+            }}
+          />
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56"
+            style={{
+              background: "radial-gradient(circle, rgba(26, 26, 46, 0.02) 0%, transparent 70%)",
+            }}
+          />
+        </div>
+
         <motion.div
-          className="text-center mb-14 md:mb-16"
-          initial={{ opacity: 0, y: 12 }}
+          className="text-center mb-12 md:mb-14 relative z-10"
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 600, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="text-xs font-semibold text-blue-600 uppercase tracking-[0.15em] mb-4 block">
+          <span className="text-overline text-[var(--accent-tertiary)] mb-4 block">
             Diferenciais
           </span>
-          <h2 className="font-display text-2xl md:text-3xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight mb-4 leading-tight">
+          <h2 className="text-display-lg text-[var(--fg)] tracking-tight mb-4 leading-tight">
             Por que escolher a NextCar?
           </h2>
-          <p className="text-gray-500 max-w-lg mx-auto leading-relaxed">
+          <p className="text-body-lg text-[var(--fg-secondary)] leading-relaxed max-w-lg mx-auto">
             Não somos uma concessionária. Somos seu consultor automotivo.
           </p>
         </motion.div>
 
-        {/* Decorative shapes behind the grid */}
-        <div className="relative">
-          <div className="absolute top-0 left-1/4 w-40 h-40 rounded-full bg-blue-600/[0.02]" />
-          <div className="absolute bottom-0 right-1/4 w-32 h-32 rounded-full bg-orange-500/[0.03]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-blue-600/[0.02]" />
-
-          <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {items.map((item, index) => (
-              <motion.div
-                key={item.title}
-                className="glass-card rounded-2xl p-6 hover:shadow-md transition-all duration-300 group"
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.35, delay: index * 0.05 }}
-              >
-                <div className="w-10 h-10 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-4 group-hover:border-gray-200 transition-colors">
-                  <item.icon className="w-5 h-5 text-gray-500" />
-                </div>
-                <h3 className="font-display font-semibold text-gray-900 mb-2 text-[15px] tracking-tight">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
-                  {item.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 z-10">
+          {items.map((item, index) => (
+            <motion.div
+              key={item.title}
+              className="glass-card rounded-[16px] p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-[var(--accent-tertiary)]/30 group"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 400, delay: index * 60, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="w-12 h-12 rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--border-subtle)] flex items-center justify-center mb-4 group-hover:border-[var(--accent-tertiary)]/50 group-hover:text-[var(--accent-tertiary)] transition-all duration-300">
+                <item.icon className="w-6 h-6 text-[var(--fg-secondary)] group-hover:text-[var(--accent-tertiary)] transition-colors" aria-hidden="true" />
+              </div>
+              <h3 className="text-h3 text-[var(--fg)] mb-2 tracking-tight">
+                {item.title}
+              </h3>
+              <p className="text-body text-[var(--fg-secondary)] leading-relaxed">
+                {item.desc}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

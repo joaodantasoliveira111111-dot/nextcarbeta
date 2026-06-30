@@ -5,12 +5,14 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#2563EB",
+  themeColor: "#1A1A2E",
 };
 
 export const metadata: Metadata = {
@@ -36,8 +38,11 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       className={`${inter.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-[var(--bg)] text-[var(--fg)]">
+        {children}
+      </body>
     </html>
   );
 }

@@ -25,25 +25,29 @@ const faqs = [
     q: "Qual a área de atuação da NextCar?",
     a: "Atualmente focamos nosso atendimento personalizado na Região Metropolitana do Recife, garantindo que as vistorias e negociações com parceiros locais tenham o máximo de rigor e agilidade.",
   },
+  {
+    q: "Como a NextCar garante a qualidade dos veículos?",
+    a: "Todos os veículos passam por verificação de procedência, histórico de manutenção e inspeção técnica antes de serem apresentados. Trabalhamos apenas com parceiros auditados e oferecemos garantia estendida nas recomendações finais.",
+  },
 ];
 
 export const FAQs = () => {
   const [open, setOpen] = React.useState<number | null>(null);
 
   return (
-    <section className="section-padding bg-gray-50" id="faq">
+    <section className="section-padding bg-[var(--color-bg-tertiary)]" id="faq">
       <div className="container-max max-w-2xl">
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 12 }}
+          className="text-center mb-14"
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 600, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="text-xs font-semibold text-blue-600 uppercase tracking-[0.15em] mb-4 block">
+          <span className="text-overline text-[var(--accent-tertiary)] mb-4 block">
             Dúvidas frequentes
           </span>
-          <h2 className="font-display text-2xl md:text-3xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-tight">
+          <h2 className="text-display-lg text-[var(--fg)] tracking-tight leading-tight">
             Perguntas frequentes
           </h2>
         </motion.div>
@@ -54,29 +58,33 @@ export const FAQs = () => {
             return (
               <div
                 key={index}
-                className="border border-gray-200/80 bg-white rounded-xl overflow-hidden transition-all duration-200"
+                className="bg-[var(--color-bg-secondary)] border border-[var(--border-subtle)] rounded-[16px] overflow-hidden transition-all duration-200"
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left font-medium text-gray-900 text-sm md:text-base outline-none"
+                  className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-medium text-[var(--fg)] text-body outline-none hover:bg-[var(--color-bg-tertiary)]/50 transition-colors"
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
                 >
                   <span className="tracking-tight">{faq.q}</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300 ${
-                      isOpen ? "rotate-180 text-blue-600" : ""
-                    }`}
-                  />
+                  <motion.div
+                    className="flex-shrink-0 text-[var(--fg-muted)]"
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 250, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <ChevronDown className="w-5 h-5" aria-hidden="true" />
+                  </motion.div>
                 </button>
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
+                      id={`faq-answer-${index}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      transition={{ duration: 300, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <div className="px-5 pb-5 text-sm text-gray-500 leading-relaxed">
+                      <div className="px-6 pb-6 text-body text-[var(--fg-secondary)] leading-relaxed border-t border-[var(--border-subtle)]">
                         {faq.a}
                       </div>
                     </motion.div>
